@@ -20,7 +20,7 @@
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><polygon points='0,0 12,6 6,8 4,14 0,10' fill='white' stroke='%23888' stroke-width='0.5'/></svg>"), auto;
     }
 
-    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close, .hidden-easter-egg {
+    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close {
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18'><polygon points='0,0 14,7 7,9 5,16 0,12' fill='white' stroke='%23aaa' stroke-width='0.5'/><circle cx='7' cy='7' r='1.5' fill='white' opacity='0.6'/></svg>"), pointer;
     }
 
@@ -261,17 +261,6 @@
     .online-box .user-list .dot { display: inline-block; width: 6px; height: 6px; background: #44aa44; border-radius: 50%; margin-right: 10px; }
     .online-box .refresh-note { color: #445566; font-size: 10px; margin-top: 16px; font-family: 'Courier New', monospace; }
 
-    .hidden-easter-egg {
-      position: fixed;
-      width: 30px;
-      height: 30px;
-      z-index: 400;
-      opacity: 0;
-    }
-    #egg-1 { top: 38px; left: 50%; width: 40px; height: 40px; }
-    #egg-2 { bottom: 60px; right: 60px; }
-    #egg-3 { top: 95px; right: 20px; }
-
     .egg-popup {
       display: none;
       position: fixed;
@@ -283,7 +272,7 @@
       padding: 20px 30px;
       z-index: 450;
       font-family: 'Courier New', monospace;
-      font-size: 16px;
+      font-size: 18px;
       color: #7a9cc6;
       text-align: center;
       max-width: 320px;
@@ -317,7 +306,7 @@
 <div class="forum-container">
 
   <div class="forum-header">
-    <div class="forum-title">ROOM 1015</div>
+    <div class="forum-title" id="forum-title-area">ROOM 1015</div>
     <div class="forum-subtitle">● 私人存档论坛 ●</div>
   </div>
 
@@ -348,7 +337,7 @@
 
   <div class="post-list" id="post-list"></div>
 
-  <div class="forum-footer">
+  <div class="forum-footer" id="forum-footer-area">
     ROOM 1015 · EST. 2003<br>
     <span>来访者编号记录中…</span>
   </div>
@@ -436,14 +425,10 @@
   </div>
 </div>
 
-<!-- 隐藏彩蛋 -->
-<div class="hidden-easter-egg" id="egg-1" title="?"></div>
-<div class="hidden-easter-egg" id="egg-2" title="?"></div>
-<div class="hidden-easter-egg" id="egg-3" title="?"></div>
-
+<!-- 彩蛋弹窗 -->
 <div class="egg-popup" id="egg-popup-1">?</div>
 <div class="egg-popup" id="egg-popup-2">你是谁？</div>
-<div class="egg-popup" id="egg-popup-3">我看见你了</div>
+<div class="egg-popup" id="egg-popup-3">你猜我在哪里</div>
 
 <script>
   // ========== 页面标题闪烁 ==========
@@ -560,33 +545,39 @@
   }
   updateTime(); setInterval(updateTime, 1000);
 
-  // ========== 隐藏彩蛋（2秒自动消失） ==========
+  // ========== 隐藏彩蛋 ==========
   let eggsFound = 0;
-  const eggMessages = ["egg-popup-1", "egg-popup-2", "egg-popup-3"];
 
-  document.querySelectorAll('.hidden-easter-egg').forEach((egg, index) => {
-    egg.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (!this.dataset.found) {
-        this.dataset.found = '1';
-        eggsFound++;
-        const popup = document.getElementById(eggMessages[index]);
-        popup.style.display = 'block';
-        setTimeout(() => { popup.style.display = 'none'; }, 2000);
-        
-        if (eggsFound === 3) {
-          setTimeout(() => {
-            const finalEgg = document.createElement('div');
-            finalEgg.className = 'egg-popup';
-            finalEgg.style.display = 'block';
-            finalEgg.innerHTML = '你找到我了';
-            document.body.appendChild(finalEgg);
-            setTimeout(() => { finalEgg.remove(); }, 2000);
-          }, 500);
-        }
-      }
-    });
+  document.getElementById('forum-title-area').addEventListener('click', function(e) {
+    triggerEgg(0);
   });
+
+  document.getElementById('forum-footer-area').addEventListener('click', function(e) {
+    triggerEgg(1);
+  });
+
+  document.addEventListener('dblclick', function(e) {
+    triggerEgg(2);
+  });
+
+  function triggerEgg(index) {
+    if (eggsFound > index) return;
+    const popup = document.getElementById('egg-popup-' + (index + 1));
+    popup.style.display = 'block';
+    setTimeout(() => { popup.style.display = 'none'; }, 2000);
+    eggsFound = index + 1;
+    
+    if (eggsFound === 3) {
+      setTimeout(() => {
+        const finalEgg = document.createElement('div');
+        finalEgg.className = 'egg-popup';
+        finalEgg.style.display = 'block';
+        finalEgg.innerHTML = '你找到我了';
+        document.body.appendChild(finalEgg);
+        setTimeout(() => { finalEgg.remove(); }, 2000);
+      }, 600);
+    }
+  }
 
   window.addEventListener('load', () => {
     setTimeout(() => { document.getElementById('notice-1').style.display = 'block'; setTimeout(() => { document.getElementById('notice-1').style.display = 'none'; }, 5000); }, 5000);
