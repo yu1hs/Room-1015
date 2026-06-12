@@ -162,10 +162,13 @@
     .post-window .post-photo { width: 100%; margin: 16px 0; border: 1px solid #1a1a40; }
     .photo-caption { font-size: 10px; color: #445566; text-align: right; margin-bottom: 20px; font-family: 'Courier New', monospace; }
 
+    /* 弹窗居中 */
     .system-notice {
       display: none;
       position: fixed;
-      top: 40px; right: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background: #0a0a20;
       border: 1px solid #334466;
       padding: 16px 24px;
@@ -174,11 +177,6 @@
       font-size: 12px;
       color: #8899aa;
       max-width: 300px;
-      animation: slideIn 0.5s ease;
-    }
-    @keyframes slideIn {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
     }
     .system-notice .notice-title { color: #7a9cc6; font-weight: bold; margin-bottom: 8px; font-size: 11px; letter-spacing: 2px; }
     .system-notice .notice-body { color: #667788; font-size: 11px; line-height: 1.6; }
@@ -245,7 +243,7 @@
       .forum-container { margin: 0; border: none; }
       .forum-title { font-size: 24px; letter-spacing: 4px; }
       .post-number { width: 50px; font-size: 10px; }
-      .system-notice { right: 10px; left: 10px; max-width: none; }
+      .system-notice { max-width: 90%; }
     }
   </style>
 </head>
@@ -292,6 +290,7 @@
 
 </div>
 
+<!-- 帖子详情弹窗 -->
 <div class="post-overlay" id="post-overlay">
   <div class="post-window">
     <button class="post-window-close" onclick="closePost()">✕</button>
@@ -300,36 +299,41 @@
   </div>
 </div>
 
+<!-- 系统通知1：进入网站5秒后 -->
 <div class="system-notice" id="notice-1">
-  <div class="notice-title">▌ SYSTEM NOTICE</div>
-  <div class="notice-body">Archive successfully loaded.<br>Viewing records uploaded by HS.</div>
+  <div class="notice-title">▌ 系统通知</div>
+  <div class="notice-body">存档加载成功。<br>正在查看 HS 上传的记录。</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-1')">[ 确认 ]</div>
 </div>
 
+<!-- 系统通知2：看完第5篇帖子 -->
 <div class="system-notice" id="notice-2">
-  <div class="notice-title">▌ SYSTEM NOTICE</div>
-  <div class="notice-body">You are currently viewing archived content.<br>Last active user: HS</div>
+  <div class="notice-title">▌ 系统通知</div>
+  <div class="notice-body">你正在浏览存档内容。<br>最后活跃用户：HS</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-2')">[ 确认 ]</div>
 </div>
 
+<!-- 系统通知3：看完第9篇帖子 -->
 <div class="system-notice" id="notice-3">
-  <div class="notice-title">▌ SYSTEM NOTICE</div>
-  <div class="notice-body">Visitor detected.<br>Logging session...</div>
+  <div class="notice-title">▌ 系统通知</div>
+  <div class="notice-body">检测到访客。<br>正在记录会话...</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-3')">[ 确认 ]</div>
 </div>
 
+<!-- 浏览记录提示 -->
 <div class="tracking-notice" id="tracking-notice">
-  SESSION LOG: 浏览记录已保存 · 访客编号 #011
+  会话记录：浏览记录已保存 · 访客编号 #011
 </div>
 
+<!-- 在线用户弹窗 -->
 <div class="online-overlay" id="online-overlay">
   <div class="online-box">
-    <h3>▌ USERS ONLINE</h3>
+    <h3>▌ 在线用户</h3>
     <div class="user-list">
       <div><span class="dot"></span> HS</div>
       <div><span class="dot"></span> Guest_011</div>
     </div>
-    <div class="refresh-note">Last refresh: Now</div>
+    <div class="refresh-note">最后刷新：Now</div>
     <div style="margin-top:20px; color:#445566; font-size:10px; font-family:'Courier New',monospace; cursor:pointer;" onclick="document.getElementById('online-overlay').style.display='none'">[ 关闭 ]</div>
   </div>
 </div>
