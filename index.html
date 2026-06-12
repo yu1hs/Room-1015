@@ -365,7 +365,7 @@
   </div>
 </div>
 
-<!-- 留言板弹窗 -->
+<!-- 留言板独立弹窗 -->
 <div class="post-overlay" id="message-overlay">
   <div class="post-window">
     <button class="post-window-close" onclick="closeMessageBoard()">✕</button>
@@ -471,15 +471,19 @@
     document.title = altTitles[titleIndex];
   }, 8000);
 
-  // ========== 留言板 ==========
+  // ========== 留言板（独立弹窗） ==========
   function openMessageBoard() {
     document.getElementById('message-overlay').style.display = 'flex';
   }
   function closeMessageBoard() {
     document.getElementById('message-overlay').style.display = 'none';
   }
+  // 点击遮罩关闭
+  document.getElementById('message-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeMessageBoard();
+  });
 
-  // ========== 帖子数据 ==========
+  // ========== 帖子数据（无图片批注） ==========
   const posts = [
     {
       id: "POST 001", date: "02:14 AM",
@@ -546,6 +550,9 @@
   }
 
   function closePost() { document.getElementById('post-overlay').style.display = 'none'; }
+  document.getElementById('post-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closePost();
+  });
 
   let n2 = false, n3 = false, tr = false, ol = false;
   function onRead(c) {
