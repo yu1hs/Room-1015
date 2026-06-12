@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room 1015</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #050510;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(20,20,60,0.1) 2px, rgba(20,20,60,0.1) 4px);
+      color: #8899aa;
+      font-family: 'Georgia', 'Times New Roman', '宋体', serif;
+      font-size: 14px;
+      line-height: 1.8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .forum-container {
+      width: 720px;
+      max-width: 100%;
+      background: #080820;
+      margin: 20px;
+      border: 1px solid #1a1a40;
+    }
+
+    .forum-header {
+      background: linear-gradient(180deg, #0d0d30 0%, #080820 100%);
+      border-bottom: 1px solid #1a1a40;
+      padding: 30px 24px 20px;
+      text-align: center;
+    }
+
+    .forum-title {
+      font-size: 32px;
+      color: #7a9cc6;
+      letter-spacing: 8px;
+      font-family: 'Georgia', serif;
+      text-transform: uppercase;
+    }
+
+    .forum-subtitle {
+      font-size: 11px;
+      color: #445566;
+      letter-spacing: 3px;
+      margin-top: 6px;
+    }
+
+    .forum-nav {
+      background: #0a0a25;
+      border-bottom: 1px solid #151540;
+      padding: 8px 20px;
+      font-size: 11px;
+      color: #556677;
+      display: flex;
+      gap: 20px;
+      font-family: 'Courier New', monospace;
+    }
+    .forum-nav span { cursor: default; opacity: 0.7; }
+    .forum-nav span:hover { opacity: 1; color: #8899bb; }
+
+    .forum-status {
+      background: #060620;
+      border-bottom: 1px solid #151540;
+      padding: 10px 20px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Courier New', monospace;
+    }
+    .status-left { color: #557766; }
+    .status-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #44aa44;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: statusPulse 3s ease-in-out infinite;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .status-right { color: #445566; font-size: 10px; }
+    .guest-tag { color: #3a3a50; font-size: 10px; margin-left: 10px; opacity: 0; transition: opacity 2s ease; }
+    .guest-tag.visible { opacity: 1; }
+
+    .forum-intro {
+      padding: 20px 24px;
+      border-bottom: 1px solid #151540;
+      color: #667788;
+      font-size: 12px;
+      line-height: 2;
+    }
+    .highlight { color: #7a9cc6; }
+
+    .post-list { padding: 0; }
+    .post-item {
+      border-bottom: 1px solid #111135;
+      padding: 20px 24px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: flex;
+      gap: 16px;
+    }
+    .post-item:hover { background: #0c0c2a; }
+    .post-number {
+      color: #334466;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      flex-shrink: 0;
+      width: 70px;
+    }
+    .post-title { color: #8899bb; font-size: 14px; font-weight: bold; }
+    .post-date { color: #445566; font-size: 11px; margin-bottom: 6px; font-family: 'Courier New', monospace; }
+    .post-excerpt { color: #556677; font-size: 12px; }
+
+    .post-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .post-window {
+      background: #080820;
+      border: 2px solid #1a1a40;
+      width: 620px;
+      max-width: 92%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 28px;
+      position: relative;
+    }
+    .post-window-close {
+      position: absolute;
+      top: 12px; right: 16px;
+      background: none;
+      border: none;
+      color: #556677;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .post-window-close:hover { color: #aa6666; }
+    .post-window .post-time {
+      color: #445566;
+      font-size: 11px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #151540;
+      font-family: 'Courier New', monospace;
+    }
+    .post-window .post-text { color: #99aabb; font-size: 14px; line-height: 2; }
+    .post-window .post-photo { width: 100%; margin: 16px 0; border: 1px solid #1a1a40; }
+    .photo-caption { font-size: 10px; color: #445566; text-align: right; margin-bottom: 20px; font-family: 'Courier New', monospace; }
+
+    .system-notice {
+      display: none;
+      position: fixed;
+      top: 40px; right: 40px;
+      background: #0a0a20;
+      border: 1px solid #334466;
+      padding: 16px 24px;
+      z-index: 200;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #8899aa;
+      max-width: 300px;
+      animation: slideIn 0.5s ease;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .system-notice .notice-title { color: #7a9cc6; font-weight: bold; margin-bottom: 8px; font-size: 11px; letter-spacing: 2px; }
+    .system-notice .notice-body { color: #667788; font-size: 11px; line-height: 1.6; }
+    .system-notice .notice-dismiss { margin-top: 10px; color: #445566; cursor: pointer; font-size: 10px; text-align: right; }
+    .system-notice .notice-dismiss:hover { color: #8899aa; }
+
+    .tracking-notice {
+      display: none;
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%);
+      background: #0a0a20;
+      border: 1px solid #2a2a40;
+      padding: 12px 20px;
+      z-index: 150;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      color: #445566;
+    }
+
+    .online-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 300;
+      justify-content: center;
+      align-items: center;
+    }
+    .online-box {
+      background: #080820;
+      border: 2px solid #1a1a40;
+      padding: 40px;
+      text-align: center;
+      min-width: 280px;
+    }
+    .online-box h3 {
+      color: #7a9cc6;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+    .online-box .user-list { color: #8899bb; font-family: 'Courier New', monospace; font-size: 14px; line-height: 2.5; }
+    .online-box .user-list .dot { display: inline-block; width: 6px; height: 6px; background: #44aa44; border-radius: 50%; margin-right: 10px; }
+    .online-box .refresh-note { color: #445566; font-size: 10px; margin-top: 16px; font-family: 'Courier New', monospace; }
+
+    .forum-footer {
+      padding: 24px;
+      text-align: center;
+      font-size: 10px;
+      color: #2a2a40;
+      border-top: 1px solid #111135;
+      font-family: 'Courier New', monospace;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #050510; }
+    ::-webkit-scrollbar-thumb { background: #1a1a40; border: 2px solid #050510; }
+
+    @media (max-width: 600px) {
+      .forum-container { margin: 0; border: none; }
+      .forum-title { font-size: 24px; letter-spacing: 4px; }
+      .post-number { width: 50px; font-size: 10px; }
+      .system-notice { right: 10px; left: 10px; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="forum-container">
+
+  <div class="forum-header">
+    <div class="forum-title">ROOM 1015</div>
+    <div class="forum-subtitle">● 私人存档论坛 ●</div>
+  </div>
+
+  <div class="forum-nav">
+    <span>⌂ 首页</span>
+    <span>┋ 存档</span>
+    <span>┋ 关于</span>
+    <span>┋ 留言</span>
+    <span style="color:#3a3a50;">登录（已关闭）</span>
+  </div>
+
+  <div class="forum-status">
+    <div class="status-left">
+      <span class="status-dot"></span>
+      当前在线：<span style="color:#7a9cc6;">HS</span>
+      <span class="guest-tag" id="guest-tag">┋ 访客 #011</span>
+    </div>
+    <div class="status-right">最后刷新：<span id="current-time">--:--</span></div>
+  </div>
+
+  <div class="forum-intro">
+    欢迎来到 <span class="highlight">Room 1015</span>。<br>
+    这是一个已经停止更新很久的论坛。<br>
+    服务器记录显示，大部分内容都来自同一位用户。<br><br>
+    用户名：<span class="highlight">HS</span><br>
+    最后活跃时间：<span style="color:#44aa44;">Now</span>
+  </div>
+
+  <div class="post-list" id="post-list"></div>
+
+  <div class="forum-footer">
+    ROOM 1015 · EST. 2003<br>
+    <span>来访者编号记录中…</span>
+  </div>
+
+</div>
+
+<div class="post-overlay" id="post-overlay">
+  <div class="post-window">
+    <button class="post-window-close" onclick="closePost()">✕</button>
+    <div class="post-time" id="post-time"></div>
+    <div class="post-text" id="post-text"></div>
+  </div>
+</div>
+
+<div class="system-notice" id="notice-1">
+  <div class="notice-title">▌ SYSTEM NOTICE</div>
+  <div class="notice-body">Archive successfully loaded.<br>Viewing records uploaded by HS.</div>
+  <div class="notice-dismiss" onclick="dismissNotice('notice-1')">[ 确认 ]</div>
+</div>
+
+<div class="system-notice" id="notice-2">
+  <div class="notice-title">▌ SYSTEM NOTICE</div>
+  <div class="notice-body">You are currently viewing archived content.<br>Last active user: HS</div>
+  <div class="notice-dismiss" onclick="dismissNotice('notice-2')">[ 确认 ]</div>
+</div>
+
+<div class="system-notice" id="notice-3">
+  <div class="notice-title">▌ SYSTEM NOTICE</div>
+  <div class="notice-body">Visitor detected.<br>Logging session...</div>
+  <div class="notice-dismiss" onclick="dismissNotice('notice-3')">[ 确认 ]</div>
+</div>
+
+<div class="tracking-notice" id="tracking-notice">
+  SESSION LOG: 浏览记录已保存 · 访客编号 #011
+</div>
+
+<div class="online-overlay" id="online-overlay">
+  <div class="online-box">
+    <h3>▌ USERS ONLINE</h3>
+    <div class="user-list">
+      <div><span class="dot"></span> HS</div>
+      <div><span class="dot"></span> Guest_011</div>
+    </div>
+    <div class="refresh-note">Last refresh: Now</div>
+    <div style="margin-top:20px; color:#445566; font-size:10px; font-family:'Courier New',monospace; cursor:pointer;" onclick="document.getElementById('online-overlay').style.display='none'">[ 关闭 ]</div>
+  </div>
+</div>
+
+<script>
+  const posts = [
+    {
+      id: "POST 001", date: "02:14 AM",
+      content: `<p>今晚的风很大。</p><p>窗户一直在响。</p><p>明明已经很晚了，却完全没有困意。</p><p>有时候会觉得，夜晚比白天安静得多。</p><p>至少不会有人打扰。</p><img src="images/photo-001.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">02:14 — 窗外</p>`
+    },
+    {
+      id: "POST 012", date: "03:03 AM",
+      content: `<p>刚刚摘下耳机。</p><p>房间突然变得很空。</p><p>音乐停下来的那一瞬间总会有些不习惯。</p><p>好像少了什么。</p><img src="images/photo-002.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:03 — 书桌</p>`
+    },
+    {
+      id: "POST 026", date: "03:27 AM",
+      content: `<p>下楼买饮料。</p><p>便利店还亮着灯。</p><p>路上一个人都没有。</p><p>这种时间出门的时候，总会觉得整个城市睡着了。</p><img src="images/photo-003.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:27 — 便利店</p>`
+    },
+    {
+      id: "POST 041", date: "02:51 AM",
+      content: `<p>翻到了一张很久以前的照片。</p><p>很多事情都记不清了。</p><p>只有照片还记得。</p><img src="images/photo-004.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">02:51 — 相册</p>`
+    },
+    {
+      id: "POST 057", date: "03:44 AM",
+      content: `<p>最近总在听同一首歌。</p><p>明明已经知道下一句是什么。</p><p>还是会继续播放。</p><img src="images/photo-005.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:44 — 播放列表</p>`
+    },
+    {
+      id: "POST 072", date: "04:08 AM",
+      content: `<p>结束得比想象中晚。</p><p>回来的路上没有车。</p><p>街灯很亮。</p><p>有那么一瞬间，好像时间停住了。</p><img src="images/photo-006.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">04:08 — 街道</p>`
+    },
+    {
+      id: "POST 089", date: "03:18 AM",
+      content: `<p>今天又有人登录论坛。</p><p>停留时间很短。</p><p>大概只是路过。</p><img src="images/photo-007.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:18 — 屏幕倒影</p>`
+    },
+    {
+      id: "POST 104", date: "03:35 AM",
+      content: `<p>最近找到这里的人好像变多了。</p><p>有些人会翻照片。</p><p>有些人会看帖子。</p><p>很少有人会看到最后。</p><img src="images/photo-008.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:35 — 访客记录</p>`
+    },
+    {
+      id: "POST 118", date: "04:01 AM",
+      content: `<p>有时候会好奇。</p><p>如果一个人留下足够多的痕迹。</p><p>会不会真的有人试着了解他。</p><img src="images/photo-009.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">04:01 — 笔记</p>`
+    },
+    {
+      id: "POST 131", date: "Unknown",
+      content: `<p>今晚也有人来了。</p><p>停留时间比上一个人长。</p><p>看了很多东西。</p><p>如果你能看到这里。</p><p>说明你已经快翻完了。</p><div style="margin-top:20px; padding-top:16px; border-top:1px solid #151540; color:#556677; font-size:11px; font-family:'Courier New',monospace; text-align:center;">最后一条记录。<br><span style="color:#445566;">如需查看更多，请访问 /1015hs</span></div>`
+    }
+  ];
+
+  const postList = document.getElementById('post-list');
+  let readCount = 0;
+  const readSet = new Set();
+
+  posts.forEach((post, index) => {
+    const item = document.createElement('div');
+    item.className = 'post-item';
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = post.content;
+    const plainText = tempDiv.textContent.replace(/\s+/g, ' ').trim().substring(0, 50);
+    item.innerHTML = `<div class="post-number">${post.id}</div><div class="post-body"><div class="post-title">${post.id}</div><div class="post-date">${post.date}</div><div class="post-excerpt">${plainText}...</div></div>`;
+    item.addEventListener('click', () => openPost(index));
+    postList.appendChild(item);
+  });
+
+  function openPost(index) {
+    document.getElementById('post-time').innerText = posts[index].date;
+    document.getElementById('post-text').innerHTML = posts[index].content;
+    document.getElementById('post-overlay').style.display = 'flex';
+    if (!readSet.has(index)) { readSet.add(index); readCount++; onRead(readCount); }
+  }
+
+  function closePost() { document.getElementById('post-overlay').style.display = 'none'; }
+  document.getElementById('post-overlay').addEventListener('click', function(e) { if (e.target === this) closePost(); });
+
+  let n2 = false, n3 = false, tr = false, ol = false;
+  function onRead(c) {
+    if (c === 5 && !n2) { n2 = true; setTimeout(() => { document.getElementById('notice-2').style.display = 'block'; setTimeout(() => { document.getElementById('notice-2').style.display = 'none'; }, 6000); }, 500); }
+    if (c === 9 && !n3) { n3 = true; setTimeout(() => { document.getElementById('notice-3').style.display = 'block'; setTimeout(() => { document.getElementById('notice-3').style.display = 'none'; }, 6000); }, 500); }
+    if (c === 7 && !tr) { tr = true; setTimeout(() => { const t = document.getElementById('tracking-notice'); t.style.display = 'block'; setTimeout(() => { t.style.display = 'none'; }, 5000); }, 300); }
+    if (c >= 5) { document.getElementById('guest-tag').classList.add('visible'); }
+    if (c === 10 && !ol) { ol = true; setTimeout(() => { document.getElementById('online-overlay').style.display = 'flex'; }, 1500); }
+  }
+
+  function dismissNotice(id) { document.getElementById(id).style.display = 'none'; }
+
+  function updateTime() {
+    const n = new Date();
+    document.getElementById('current-time').innerText = [n.getHours(), n.getMinutes(), n.getSeconds()].map(x => x.toString().padStart(2,'0')).join(':');
+  }
+  updateTime(); setInterval(updateTime, 1000);
+
+  window.addEventListener('load', () => {
+    setTimeout(() => { document.getElementById('notice-1').style.display = 'block'; setTimeout(() => { document.getElementById('notice-1').style.display = 'none'; }, 5000); }, 5000);
+    if (!localStorage.getItem('room1015_entry')) localStorage.setItem('room1015_entry', Date.now());
+  });
+</script>
+
+</body>
+</html>
