@@ -313,7 +313,7 @@
   <div class="forum-nav">
     <span>⌂ 首页</span>
     <span>┋ 存档</span>
-    <span>┋ 关于</span>
+    <span class="clickable" id="nav-about">┋ 关于</span>
     <span class="clickable" onclick="openMessageBoard()">┋ 留言</span>
     <span style="color:#3a3a50;">登录（已关闭）</span>
   </div>
@@ -337,7 +337,7 @@
 
   <div class="post-list" id="post-list"></div>
 
-  <div class="forum-footer" id="forum-footer-area">
+  <div class="forum-footer">
     ROOM 1015 · EST. 2003<br>
     <span>来访者编号记录中…</span>
   </div>
@@ -435,7 +435,7 @@
   const altTitles = [
     "Room 1015",
     "Room 1015 · 你还在吗",
-    "Room 1015 · 凌晨",
+    "Room 1015 · 我是EVAN",
     "Room 1015",
     "Room 1015 · ...",
     "Room 1015"
@@ -548,14 +548,17 @@
   // ========== 隐藏彩蛋 ==========
   let eggsFound = 0;
 
+  // 彩蛋1：点击标题
   document.getElementById('forum-title-area').addEventListener('click', function(e) {
     triggerEgg(0);
   });
 
-  document.getElementById('forum-footer-area').addEventListener('click', function(e) {
+  // 彩蛋2：点击导航栏"关于"
+  document.getElementById('nav-about').addEventListener('click', function(e) {
     triggerEgg(1);
   });
 
+  // 彩蛋3：双击空白处
   document.addEventListener('dblclick', function(e) {
     triggerEgg(2);
   });
