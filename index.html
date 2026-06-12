@@ -17,11 +17,11 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' style='font-size:12px'><text y='13'>🖱</text></svg>"), auto;
+      cursor: default;
     }
 
     a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close {
-      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' style='font-size:14px'><text y='14'>👉</text></svg>"), pointer;
+      cursor: pointer;
     }
 
     .forum-container {
@@ -284,7 +284,7 @@
       padding: 20px 30px;
       z-index: 450;
       font-family: 'Courier New', monospace;
-      font-size: 13px;
+      font-size: 16px;
       color: #7a9cc6;
       text-align: center;
       max-width: 320px;
@@ -442,18 +442,9 @@
 <div class="hidden-easter-egg" id="egg-2" title="?"></div>
 <div class="hidden-easter-egg" id="egg-3" title="?"></div>
 
-<div class="egg-popup" id="egg-popup-1">
-  你找到了第一个碎片。<br>
-  <span style="font-size:10px; color:#445566;">HS 曾经在这里停留了很长时间。</span>
-</div>
-<div class="egg-popup" id="egg-popup-2">
-  你找到了第二个碎片。<br>
-  <span style="font-size:10px; color:#445566;">这个论坛不止你一个人在深夜来过。</span>
-</div>
-<div class="egg-popup" id="egg-popup-3">
-  你找到了第三个碎片。<br>
-  <span style="font-size:10px; color:#445566;">有些痕迹，是故意留给后来的人的。</span>
-</div>
+<div class="egg-popup" id="egg-popup-1">?</div>
+<div class="egg-popup" id="egg-popup-2">你是谁？</div>
+<div class="egg-popup" id="egg-popup-3">我看见你了</div>
 
 <script>
   // ========== 页面标题闪烁 ==========
@@ -471,19 +462,18 @@
     document.title = altTitles[titleIndex];
   }, 8000);
 
-  // ========== 留言板（独立弹窗） ==========
+  // ========== 留言板 ==========
   function openMessageBoard() {
     document.getElementById('message-overlay').style.display = 'flex';
   }
   function closeMessageBoard() {
     document.getElementById('message-overlay').style.display = 'none';
   }
-  // 点击遮罩关闭
   document.getElementById('message-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeMessageBoard();
   });
 
-  // ========== 帖子数据（无图片批注） ==========
+  // ========== 帖子数据 ==========
   const posts = [
     {
       id: "POST 001", date: "02:14 AM",
@@ -523,7 +513,7 @@
     },
     {
       id: "POST 131", date: "Unknown",
-      content: `<p>今晚也有人来了。</p><p>停留时间比上一个人长。</p><p>看了很多东西。</p><p>如果你能看到这里。</p><p>说明你已经快翻完了。</p><div style="margin-top:20px; padding-top:16px; border-top:1px solid #151540; color:#556677; font-size:11px; font-family:'Courier New',monospace; text-align:center;">最后一条记录。<br><span style="color:#445566;">如需查看更多，请访问 /1015hs</span></div>`
+      content: `<p>你想知道我在哪里吗？</p><p>也许我一直都在。</p><p>也许你翻到的这些痕迹，就是我留下的路标。</p><p>如果你能走到这里。</p><p>说明你离我已经很近了。</p><div style="margin-top:20px; padding-top:16px; border-top:1px solid #151540; color:#556677; font-size:11px; font-family:'Courier New',monospace; text-align:center;">最后一条记录。<br><span style="color:#445566;">如需查看更多，请访问 /1015hs</span></div>`
     }
   ];
 
@@ -571,7 +561,7 @@
   }
   updateTime(); setInterval(updateTime, 1000);
 
-  // ========== 隐藏彩蛋 ==========
+  // ========== 隐藏彩蛋（2秒自动消失） ==========
   let eggsFound = 0;
   const eggMessages = ["egg-popup-1", "egg-popup-2", "egg-popup-3"];
 
@@ -583,17 +573,17 @@
         eggsFound++;
         const popup = document.getElementById(eggMessages[index]);
         popup.style.display = 'block';
-        setTimeout(() => { popup.style.display = 'none'; }, 5000);
+        setTimeout(() => { popup.style.display = 'none'; }, 2000);
         
         if (eggsFound === 3) {
           setTimeout(() => {
             const finalEgg = document.createElement('div');
             finalEgg.className = 'egg-popup';
             finalEgg.style.display = 'block';
-            finalEgg.innerHTML = '三个碎片都找到了。<br><span style="font-size:10px; color:#445566;">你比大多数人都更仔细。</span>';
+            finalEgg.innerHTML = '你找到我了';
             document.body.appendChild(finalEgg);
-            setTimeout(() => { finalEgg.remove(); }, 5000);
-          }, 1000);
+            setTimeout(() => { finalEgg.remove(); }, 2000);
+          }, 500);
         }
       }
     });
