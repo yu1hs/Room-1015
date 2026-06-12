@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room 1015 — New Message</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #050510;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(20,20,60,0.1) 2px, rgba(20,20,60,0.1) 4px);
+      color: #8899aa;
+      font-family: 'Georgia', 'Times New Roman', '宋体', serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    .message-container {
+      max-width: 520px;
+      width: 100%;
+      background: #080820;
+      border: 1px solid #1a1a40;
+      padding: 50px 40px;
+      animation: fadeIn 4s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .message-header { color: #7a9cc6; font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #151540; }
+    .message-from { color: #556677; font-size: 11px; margin-bottom: 24px; font-family: 'Courier New', monospace; }
+    .message-body { color: #99aabb; font-size: 15px; line-height: 2.2; }
+    .message-body p { margin-bottom: 12px; }
+    .message-footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #151540; color: #445566; font-size: 12px; font-family: 'Courier New', monospace; text-align: right; }
+    .stay-time { color: #3a3a50; font-size: 10px; margin-top: 16px; text-align: center; font-family: 'Courier New', monospace; }
+  </style>
+</head>
+<body>
+<div class="message-container">
+  <div class="message-header">▌ NEW MESSAGE</div>
+  <div class="message-from">From: HS</div>
+  <div class="message-body">
+    <p>你来了。</p>
+    <p>比前面的人停留得更久。</p>
+    <p>看了照片。</p>
+    <p>翻了帖子。</p>
+    <p>也看到了这里。</p>
+    <p>其实从你打开 Room 1015 的时候开始，我就知道。</p>
+    <p>不过没关系。</p>
+    <p>这里本来就是留给后来的人看的。</p>
+    <p>时间不早了。</p>
+    <p>晚安。</p>
+  </div>
+  <div class="message-footer">— HS</div>
+  <div class="stay-time" id="stay-time"></div>
+</div>
+<script>
+  const et = parseInt(localStorage.getItem('room1015_entry') || Date.now());
+  const sm = Math.floor((Date.now() - et) / 60000);
+  document.getElementById('stay-time').innerText = sm > 0 ? '你在 Room 1015 停留了 ' + sm + ' 分钟。' : '欢迎。';
+</script>
+</body>
+</html>
