@@ -17,11 +17,11 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      cursor: default;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><polygon points='0,0 12,6 6,8 4,14 0,10' fill='white' stroke='%23888' stroke-width='0.5'/></svg>"), auto;
     }
 
-    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close {
-      cursor: pointer;
+    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close, .hidden-easter-egg {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18'><polygon points='0,0 14,7 7,9 5,16 0,12' fill='white' stroke='%23aaa' stroke-width='0.5'/><circle cx='7' cy='7' r='1.5' fill='white' opacity='0.6'/></svg>"), pointer;
     }
 
     .forum-container {
@@ -267,7 +267,6 @@
       height: 30px;
       z-index: 400;
       opacity: 0;
-      cursor: pointer;
     }
     #egg-1 { top: 38px; left: 50%; width: 40px; height: 40px; }
     #egg-2 { bottom: 60px; right: 60px; }
