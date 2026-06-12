@@ -406,7 +406,7 @@
 <!-- 系统通知3 -->
 <div class="system-notice" id="notice-3">
   <div class="notice-title">▌ 系统通知</div>
-  <div class="notice-body">检测到访客。<br>你好？...</div>
+  <div class="notice-body">检测到访客。<br>正在记录会话...</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-3')">[ 确认 ]</div>
 </div>
 
@@ -438,7 +438,7 @@
   const altTitles = [
     "Room 1015",
     "Room 1015 · 你还在吗",
-    "Room 1015 · 嗨",
+    "Room 1015 · 凌晨",
     "Room 1015",
     "Room 1015 · ...",
     "Room 1015"
@@ -548,41 +548,27 @@
   }
   updateTime(); setInterval(updateTime, 1000);
 
-  // ========== 彩蛋：点击特定文字触发（2秒自动消失） ==========
+  // ========== 彩蛋（2秒自动消失，无集齐弹窗） ==========
   let eggsFound = 0;
 
   function showEgg(num) {
-    if (eggsFound !== num - 1) return; // 必须按顺序
+    if (eggsFound !== num - 1) return;
     const popup = document.getElementById('popup-' + num);
     popup.style.display = 'block';
     setTimeout(() => { popup.style.display = 'none'; }, 2000);
     eggsFound = num;
-
-    if (eggsFound === 3) {
-      setTimeout(() => {
-        const finalEgg = document.createElement('div');
-        finalEgg.className = 'egg-popup';
-        finalEgg.style.display = 'block';
-        finalEgg.innerHTML = '你找到我了';
-        document.body.appendChild(finalEgg);
-        setTimeout(() => { finalEgg.remove(); }, 2000);
-      }, 600);
-    }
   }
 
-  // 彩蛋1：点击顶部标题
   document.getElementById('egg-1').addEventListener('click', function(e) {
     e.stopPropagation();
     showEgg(1);
   });
 
-  // 彩蛋2：点击导航栏"关于"
   document.getElementById('egg-2').addEventListener('click', function(e) {
     e.stopPropagation();
     showEgg(2);
   });
 
-  // 彩蛋3：点击论坛介绍里的"Room 1015"
   document.getElementById('egg-3').addEventListener('click', function(e) {
     e.stopPropagation();
     showEgg(3);
