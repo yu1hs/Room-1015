@@ -66,7 +66,7 @@
       gap: 20px;
       font-family: 'Courier New', monospace;
     }
-    .forum-nav span { cursor: default; opacity: 0.7; user-select: none; }
+    .forum-nav span { opacity: 0.7; user-select: none; }
     .forum-nav span:hover { opacity: 1; color: #8899bb; }
     .forum-nav .clickable { cursor: pointer; }
     .forum-nav .clickable:hover { color: #7a9cc6; opacity: 1; }
@@ -170,7 +170,6 @@
     }
     .post-window .post-text { color: #99aabb; font-size: 14px; line-height: 2; }
     .post-window .post-photo { width: 100%; margin: 16px 0; border: 1px solid #1a1a40; }
-    .photo-caption { font-size: 10px; color: #445566; text-align: right; margin-bottom: 20px; font-family: 'Courier New', monospace; }
 
     .message-board {
       background: #0a0a22;
@@ -262,7 +261,6 @@
     .online-box .user-list .dot { display: inline-block; width: 6px; height: 6px; background: #44aa44; border-radius: 50%; margin-right: 10px; }
     .online-box .refresh-note { color: #445566; font-size: 10px; margin-top: 16px; font-family: 'Courier New', monospace; }
 
-    /* 隐藏点击彩蛋 */
     .hidden-easter-egg {
       position: fixed;
       width: 30px;
@@ -439,7 +437,7 @@
   </div>
 </div>
 
-<!-- ===== 隐藏点击彩蛋 ===== -->
+<!-- 隐藏彩蛋 -->
 <div class="hidden-easter-egg" id="egg-1" title="?"></div>
 <div class="hidden-easter-egg" id="egg-2" title="?"></div>
 <div class="hidden-easter-egg" id="egg-3" title="?"></div>
@@ -480,47 +478,44 @@
   function closeMessageBoard() {
     document.getElementById('message-overlay').style.display = 'none';
   }
-  document.getElementById('message-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeMessageBoard();
-  });
 
   // ========== 帖子数据 ==========
   const posts = [
     {
       id: "POST 001", date: "02:14 AM",
-      content: `<p>今晚的风很大。</p><p>窗户一直在响。</p><p>明明已经很晚了，却完全没有困意。</p><p>有时候会觉得，夜晚比白天安静得多。</p><p>至少不会有人打扰。</p><img src="images/photo-001.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">02:14 — 窗外</p>`
+      content: `<p>今晚的风很大。</p><p>有时候会觉得，傍晚比白天安静得多。</p><p>至少不会有人打扰。</p><img src="images/photo-001.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 012", date: "03:03 AM",
-      content: `<p>刚刚摘下耳机。</p><p>房间突然变得很空。</p><p>音乐停下来的那一瞬间总会有些不习惯。</p><p>好像少了什么。</p><img src="images/photo-002.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:03 — 书桌</p>`
+      content: `<p>刚刚摘下耳机。</p><p>房间突然变得很空。</p><p>音乐停下来的那一瞬间总会有些不习惯。</p><p>好像少了什么。</p><img src="images/photo-002.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 026", date: "03:27 AM",
-      content: `<p>下楼买饮料。</p><p>便利店还亮着灯。</p><p>路上一个人都没有。</p><p>这种时间出门的时候，总会觉得整个城市睡着了。</p><img src="images/photo-003.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:27 — 便利店</p>`
+      content: `<p>下楼买饮料。</p><p>便利店还亮着灯。</p><p>路上一个人都没有。</p><p>这种时间出门的时候，总会觉得整个城市睡着了。</p><img src="images/photo-003.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 041", date: "02:51 AM",
-      content: `<p>翻到了一张很久以前的照片。</p><p>很多事情都记不清了。</p><p>只有照片还记得。</p><img src="images/photo-004.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">02:51 — 相册</p>`
+      content: `<p>翻到了一张很久以前的照片。</p><p>很多事情都记不清了。</p><p>只有照片还记得。</p><img src="images/photo-004.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 057", date: "03:44 AM",
-      content: `<p>最近总在听同一首歌。</p><p>明明已经知道下一句是什么。</p><p>还是会继续播放。</p><img src="images/photo-005.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:44 — 播放列表</p>`
+      content: `<p>最近总在听同一首歌。</p><p>明明已经知道下一句是什么。</p><p>还是会继续播放。</p><img src="images/photo-005.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 072", date: "04:08 AM",
-      content: `<p>结束得比想象中晚。</p><p>回来的路上没有车。</p><p>街灯很亮。</p><p>有那么一瞬间，好像时间停住了。</p><img src="images/photo-006.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">04:08 — 街道</p>`
+      content: `<p>结束得比想象中晚。</p><p>回来的路上没有车。</p><p>街灯很亮。</p><p>有那么一瞬间，好像时间停住了。</p><img src="images/photo-006.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 089", date: "03:18 AM",
-      content: `<p>今天又有人登录论坛。</p><p>停留时间很短。</p><p>大概只是路过。</p><img src="images/photo-007.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:18 — 屏幕倒影</p>`
+      content: `<p>今天又有人登录论坛。</p><p>停留时间很短。</p><p>大概只是路过。</p><img src="images/photo-007.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 104", date: "03:35 AM",
-      content: `<p>最近找到这里的人好像变多了。</p><p>有些人会翻照片。</p><p>有些人会看帖子。</p><p>很少有人会看到最后。</p><img src="images/photo-008.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">03:35 — 访客记录</p>`
+      content: `<p>最近找到这里的人好像变多了。</p><p>有些人会翻照片。</p><p>有些人会看帖子。</p><p>很少有人会看到最后。</p><img src="images/photo-008.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 118", date: "04:01 AM",
-      content: `<p>有时候会好奇。</p><p>如果一个人留下足够多的痕迹。</p><p>会不会真的有人试着了解他。</p><img src="images/photo-009.jpg" class="post-photo" onerror="this.style.display='none'"><p class="photo-caption">04:01 — 笔记</p>`
+      content: `<p>有时候会好奇。</p><p>如果一个人留下足够多的痕迹。</p><p>会不会真的有人试着了解他。</p><img src="images/photo-009.jpg" class="post-photo" onerror="this.style.display='none'">`
     },
     {
       id: "POST 131", date: "Unknown",
@@ -551,7 +546,6 @@
   }
 
   function closePost() { document.getElementById('post-overlay').style.display = 'none'; }
-  document.getElementById('post-overlay').addEventListener('click', function(e) { if (e.target === this) closePost(); });
 
   let n2 = false, n3 = false, tr = false, ol = false;
   function onRead(c) {
@@ -570,13 +564,9 @@
   }
   updateTime(); setInterval(updateTime, 1000);
 
-  // ========== 隐藏彩蛋点击事件 ==========
+  // ========== 隐藏彩蛋 ==========
   let eggsFound = 0;
-  const eggMessages = [
-    "egg-popup-1",
-    "egg-popup-2",
-    "egg-popup-3"
-  ];
+  const eggMessages = ["egg-popup-1", "egg-popup-2", "egg-popup-3"];
 
   document.querySelectorAll('.hidden-easter-egg').forEach((egg, index) => {
     egg.addEventListener('click', function(e) {
