@@ -17,6 +17,11 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' style='font-size:12px'><text y='13'>🖱</text></svg>"), auto;
+    }
+
+    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' style='font-size:14px'><text y='14'>👉</text></svg>"), pointer;
     }
 
     .forum-container {
@@ -40,6 +45,7 @@
       letter-spacing: 8px;
       font-family: 'Georgia', serif;
       text-transform: uppercase;
+      user-select: none;
     }
 
     .forum-subtitle {
@@ -47,6 +53,7 @@
       color: #445566;
       letter-spacing: 3px;
       margin-top: 6px;
+      user-select: none;
     }
 
     .forum-nav {
@@ -59,8 +66,10 @@
       gap: 20px;
       font-family: 'Courier New', monospace;
     }
-    .forum-nav span { cursor: default; opacity: 0.7; }
+    .forum-nav span { cursor: default; opacity: 0.7; user-select: none; }
     .forum-nav span:hover { opacity: 1; color: #8899bb; }
+    .forum-nav .clickable { cursor: pointer; }
+    .forum-nav .clickable:hover { color: #7a9cc6; opacity: 1; }
 
     .forum-status {
       background: #060620;
@@ -71,6 +80,7 @@
       justify-content: space-between;
       align-items: center;
       font-family: 'Courier New', monospace;
+      user-select: none;
     }
     .status-left { color: #557766; }
     .status-dot {
@@ -96,6 +106,7 @@
       color: #667788;
       font-size: 12px;
       line-height: 2;
+      user-select: none;
     }
     .highlight { color: #7a9cc6; }
 
@@ -103,7 +114,6 @@
     .post-item {
       border-bottom: 1px solid #111135;
       padding: 20px 24px;
-      cursor: pointer;
       transition: background 0.3s;
       display: flex;
       gap: 16px;
@@ -115,6 +125,7 @@
       font-size: 12px;
       flex-shrink: 0;
       width: 70px;
+      user-select: none;
     }
     .post-title { color: #8899bb; font-size: 14px; font-weight: bold; }
     .post-date { color: #445566; font-size: 11px; margin-bottom: 6px; font-family: 'Courier New', monospace; }
@@ -147,7 +158,6 @@
       border: none;
       color: #556677;
       font-size: 20px;
-      cursor: pointer;
     }
     .post-window-close:hover { color: #aa6666; }
     .post-window .post-time {
@@ -162,7 +172,33 @@
     .post-window .post-photo { width: 100%; margin: 16px 0; border: 1px solid #1a1a40; }
     .photo-caption { font-size: 10px; color: #445566; text-align: right; margin-bottom: 20px; font-family: 'Courier New', monospace; }
 
-    /* 弹窗居中 */
+    .message-board {
+      background: #0a0a22;
+      border: 1px solid #151540;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .message-board-title {
+      color: #7a9cc6;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #151540;
+    }
+    .message-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #111130;
+      color: #8899aa;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .message-item:last-child { border-bottom: none; }
+    .message-status { font-size: 10px; color: #445566; }
+
     .system-notice {
       display: none;
       position: fixed;
@@ -180,7 +216,7 @@
     }
     .system-notice .notice-title { color: #7a9cc6; font-weight: bold; margin-bottom: 8px; font-size: 11px; letter-spacing: 2px; }
     .system-notice .notice-body { color: #667788; font-size: 11px; line-height: 1.6; }
-    .system-notice .notice-dismiss { margin-top: 10px; color: #445566; cursor: pointer; font-size: 10px; text-align: right; }
+    .system-notice .notice-dismiss { margin-top: 10px; color: #445566; font-size: 10px; text-align: right; }
     .system-notice .notice-dismiss:hover { color: #8899aa; }
 
     .tracking-notice {
@@ -226,6 +262,37 @@
     .online-box .user-list .dot { display: inline-block; width: 6px; height: 6px; background: #44aa44; border-radius: 50%; margin-right: 10px; }
     .online-box .refresh-note { color: #445566; font-size: 10px; margin-top: 16px; font-family: 'Courier New', monospace; }
 
+    /* 隐藏点击彩蛋 */
+    .hidden-easter-egg {
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      z-index: 400;
+      opacity: 0;
+      cursor: pointer;
+    }
+    #egg-1 { top: 38px; left: 50%; width: 40px; height: 40px; }
+    #egg-2 { bottom: 60px; right: 60px; }
+    #egg-3 { top: 95px; right: 20px; }
+
+    .egg-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #0a0a20;
+      border: 1px solid #7a9cc6;
+      padding: 20px 30px;
+      z-index: 450;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #7a9cc6;
+      text-align: center;
+      max-width: 320px;
+      line-height: 1.8;
+    }
+
     .forum-footer {
       padding: 24px;
       text-align: center;
@@ -233,6 +300,7 @@
       color: #2a2a40;
       border-top: 1px solid #111135;
       font-family: 'Courier New', monospace;
+      user-select: none;
     }
 
     ::-webkit-scrollbar { width: 10px; }
@@ -260,7 +328,7 @@
     <span>⌂ 首页</span>
     <span>┋ 存档</span>
     <span>┋ 关于</span>
-    <span>┋ 留言</span>
+    <span class="clickable" onclick="openMessageBoard()">┋ 留言</span>
     <span style="color:#3a3a50;">登录（已关闭）</span>
   </div>
 
@@ -299,21 +367,54 @@
   </div>
 </div>
 
-<!-- 系统通知1：进入网站5秒后 -->
+<!-- 留言板弹窗 -->
+<div class="post-overlay" id="message-overlay">
+  <div class="post-window">
+    <button class="post-window-close" onclick="closeMessageBoard()">✕</button>
+    <div class="post-time" style="color:#7a9cc6; font-family:'Courier New',monospace; letter-spacing:2px;">▌ 留言板</div>
+    <div class="post-text">
+      <div class="message-board">
+        <div class="message-board-title">陌生人留言 · 全部已读</div>
+        <div class="message-item">
+          <span>"好呀，小女孩，我会让你成为世界上最幸福的人"</span>
+          <span class="message-status">已读</span>
+        </div>
+        <div class="message-item">
+          <span>"总有一天我会走我自己的路"</span>
+          <span class="message-status">已读</span>
+        </div>
+        <div class="message-item">
+          <span>"我不会停止，我会一直往前走，心脏时快时慢，但它一直跳动，我的音乐也如此"</span>
+          <span class="message-status">已读</span>
+        </div>
+        <div class="message-item">
+          <span>"我们的未来一定是幸福的不是吗？我想我们会幸福的，非常幸福"</span>
+          <span class="message-status">已读</span>
+        </div>
+        <div class="message-item">
+          <span>"爱怎么会变呢"</span>
+          <span class="message-status">已读</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 系统通知1 -->
 <div class="system-notice" id="notice-1">
   <div class="notice-title">▌ 系统通知</div>
   <div class="notice-body">存档加载成功。<br>正在查看 HS 上传的记录。</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-1')">[ 确认 ]</div>
 </div>
 
-<!-- 系统通知2：看完第5篇帖子 -->
+<!-- 系统通知2 -->
 <div class="system-notice" id="notice-2">
   <div class="notice-title">▌ 系统通知</div>
   <div class="notice-body">你正在浏览存档内容。<br>最后活跃用户：HS</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-2')">[ 确认 ]</div>
 </div>
 
-<!-- 系统通知3：看完第9篇帖子 -->
+<!-- 系统通知3 -->
 <div class="system-notice" id="notice-3">
   <div class="notice-title">▌ 系统通知</div>
   <div class="notice-body">检测到访客。<br>正在记录会话...</div>
@@ -338,7 +439,52 @@
   </div>
 </div>
 
+<!-- ===== 隐藏点击彩蛋 ===== -->
+<div class="hidden-easter-egg" id="egg-1" title="?"></div>
+<div class="hidden-easter-egg" id="egg-2" title="?"></div>
+<div class="hidden-easter-egg" id="egg-3" title="?"></div>
+
+<div class="egg-popup" id="egg-popup-1">
+  你找到了第一个碎片。<br>
+  <span style="font-size:10px; color:#445566;">HS 曾经在这里停留了很长时间。</span>
+</div>
+<div class="egg-popup" id="egg-popup-2">
+  你找到了第二个碎片。<br>
+  <span style="font-size:10px; color:#445566;">这个论坛不止你一个人在深夜来过。</span>
+</div>
+<div class="egg-popup" id="egg-popup-3">
+  你找到了第三个碎片。<br>
+  <span style="font-size:10px; color:#445566;">有些痕迹，是故意留给后来的人的。</span>
+</div>
+
 <script>
+  // ========== 页面标题闪烁 ==========
+  const altTitles = [
+    "Room 1015",
+    "Room 1015 · 你还在吗",
+    "Room 1015 · 凌晨",
+    "Room 1015",
+    "Room 1015 · ...",
+    "Room 1015"
+  ];
+  let titleIndex = 0;
+  setInterval(() => {
+    titleIndex = (titleIndex + 1) % altTitles.length;
+    document.title = altTitles[titleIndex];
+  }, 8000);
+
+  // ========== 留言板 ==========
+  function openMessageBoard() {
+    document.getElementById('message-overlay').style.display = 'flex';
+  }
+  function closeMessageBoard() {
+    document.getElementById('message-overlay').style.display = 'none';
+  }
+  document.getElementById('message-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeMessageBoard();
+  });
+
+  // ========== 帖子数据 ==========
   const posts = [
     {
       id: "POST 001", date: "02:14 AM",
@@ -423,6 +569,38 @@
     document.getElementById('current-time').innerText = [n.getHours(), n.getMinutes(), n.getSeconds()].map(x => x.toString().padStart(2,'0')).join(':');
   }
   updateTime(); setInterval(updateTime, 1000);
+
+  // ========== 隐藏彩蛋点击事件 ==========
+  let eggsFound = 0;
+  const eggMessages = [
+    "egg-popup-1",
+    "egg-popup-2",
+    "egg-popup-3"
+  ];
+
+  document.querySelectorAll('.hidden-easter-egg').forEach((egg, index) => {
+    egg.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!this.dataset.found) {
+        this.dataset.found = '1';
+        eggsFound++;
+        const popup = document.getElementById(eggMessages[index]);
+        popup.style.display = 'block';
+        setTimeout(() => { popup.style.display = 'none'; }, 5000);
+        
+        if (eggsFound === 3) {
+          setTimeout(() => {
+            const finalEgg = document.createElement('div');
+            finalEgg.className = 'egg-popup';
+            finalEgg.style.display = 'block';
+            finalEgg.innerHTML = '三个碎片都找到了。<br><span style="font-size:10px; color:#445566;">你比大多数人都更仔细。</span>';
+            document.body.appendChild(finalEgg);
+            setTimeout(() => { finalEgg.remove(); }, 5000);
+          }, 1000);
+        }
+      }
+    });
+  });
 
   window.addEventListener('load', () => {
     setTimeout(() => { document.getElementById('notice-1').style.display = 'block'; setTimeout(() => { document.getElementById('notice-1').style.display = 'none'; }, 5000); }, 5000);
