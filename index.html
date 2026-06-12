@@ -20,7 +20,7 @@
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><polygon points='0,0 12,6 6,8 4,14 0,10' fill='white' stroke='%23888' stroke-width='0.5'/></svg>"), auto;
     }
 
-    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close {
+    a, button, .post-item, .forum-nav .clickable, .system-notice .notice-dismiss, .post-window-close, .egg-trigger {
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18'><polygon points='0,0 14,7 7,9 5,16 0,12' fill='white' stroke='%23aaa' stroke-width='0.5'/><circle cx='7' cy='7' r='1.5' fill='white' opacity='0.6'/></svg>"), pointer;
     }
 
@@ -70,6 +70,9 @@
     .forum-nav span:hover { opacity: 1; color: #8899bb; }
     .forum-nav .clickable { cursor: pointer; }
     .forum-nav .clickable:hover { color: #7a9cc6; opacity: 1; }
+
+    .egg-trigger { cursor: pointer; }
+    .egg-trigger:hover { color: #7a9cc6; }
 
     .forum-status {
       background: #060620;
@@ -306,14 +309,14 @@
 <div class="forum-container">
 
   <div class="forum-header">
-    <div class="forum-title" id="forum-title-area">ROOM 1015</div>
+    <div class="forum-title egg-trigger" id="egg-1">ROOM 1015</div>
     <div class="forum-subtitle">● 私人存档论坛 ●</div>
   </div>
 
   <div class="forum-nav">
     <span>⌂ 首页</span>
     <span>┋ 存档</span>
-    <span class="clickable" id="nav-about">┋ 关于</span>
+    <span class="clickable egg-trigger" id="egg-2">┋ 关于</span>
     <span class="clickable" onclick="openMessageBoard()">┋ 留言</span>
     <span style="color:#3a3a50;">登录（已关闭）</span>
   </div>
@@ -328,7 +331,7 @@
   </div>
 
   <div class="forum-intro">
-    欢迎来到 <span class="highlight">Room 1015</span>。<br>
+    欢迎来到 <span class="highlight egg-trigger" id="egg-3">Room 1015</span>。<br>
     这是一个已经停止更新很久的论坛。<br>
     服务器记录显示，大部分内容都来自同一位用户。<br><br>
     用户名：<span class="highlight">HS</span><br>
@@ -403,7 +406,7 @@
 <!-- 系统通知3 -->
 <div class="system-notice" id="notice-3">
   <div class="notice-title">▌ 系统通知</div>
-  <div class="notice-body">检测到访客。<br>正在记录会话...</div>
+  <div class="notice-body">检测到访客。<br>你好？...</div>
   <div class="notice-dismiss" onclick="dismissNotice('notice-3')">[ 确认 ]</div>
 </div>
 
@@ -426,16 +429,16 @@
 </div>
 
 <!-- 彩蛋弹窗 -->
-<div class="egg-popup" id="egg-popup-1">?</div>
-<div class="egg-popup" id="egg-popup-2">你是谁？</div>
-<div class="egg-popup" id="egg-popup-3">你猜我在哪里</div>
+<div class="egg-popup" id="popup-1">?</div>
+<div class="egg-popup" id="popup-2">你是谁？</div>
+<div class="egg-popup" id="popup-3">你猜我在哪里</div>
 
 <script>
   // ========== 页面标题闪烁 ==========
   const altTitles = [
     "Room 1015",
     "Room 1015 · 你还在吗",
-    "Room 1015 · 我是EVAN",
+    "Room 1015 · 嗨",
     "Room 1015",
     "Room 1015 · ...",
     "Room 1015"
@@ -545,31 +548,16 @@
   }
   updateTime(); setInterval(updateTime, 1000);
 
-  // ========== 隐藏彩蛋 ==========
+  // ========== 彩蛋：点击特定文字触发（2秒自动消失） ==========
   let eggsFound = 0;
 
-  // 彩蛋1：点击标题
-  document.getElementById('forum-title-area').addEventListener('click', function(e) {
-    triggerEgg(0);
-  });
-
-  // 彩蛋2：点击导航栏"关于"
-  document.getElementById('nav-about').addEventListener('click', function(e) {
-    triggerEgg(1);
-  });
-
-  // 彩蛋3：双击空白处
-  document.addEventListener('dblclick', function(e) {
-    triggerEgg(2);
-  });
-
-  function triggerEgg(index) {
-    if (eggsFound > index) return;
-    const popup = document.getElementById('egg-popup-' + (index + 1));
+  function showEgg(num) {
+    if (eggsFound !== num - 1) return; // 必须按顺序
+    const popup = document.getElementById('popup-' + num);
     popup.style.display = 'block';
     setTimeout(() => { popup.style.display = 'none'; }, 2000);
-    eggsFound = index + 1;
-    
+    eggsFound = num;
+
     if (eggsFound === 3) {
       setTimeout(() => {
         const finalEgg = document.createElement('div');
@@ -581,6 +569,24 @@
       }, 600);
     }
   }
+
+  // 彩蛋1：点击顶部标题
+  document.getElementById('egg-1').addEventListener('click', function(e) {
+    e.stopPropagation();
+    showEgg(1);
+  });
+
+  // 彩蛋2：点击导航栏"关于"
+  document.getElementById('egg-2').addEventListener('click', function(e) {
+    e.stopPropagation();
+    showEgg(2);
+  });
+
+  // 彩蛋3：点击论坛介绍里的"Room 1015"
+  document.getElementById('egg-3').addEventListener('click', function(e) {
+    e.stopPropagation();
+    showEgg(3);
+  });
 
   window.addEventListener('load', () => {
     setTimeout(() => { document.getElementById('notice-1').style.display = 'block'; setTimeout(() => { document.getElementById('notice-1').style.display = 'none'; }, 5000); }, 5000);
